@@ -1,13 +1,5 @@
 Config = Config or {}
 
-Config.TakeCut = 10 -- Amount in percent that will be taken when washing
-
-Config.Wash = {
-    location = vector4(-617.7, -1623.63, 33.01, 14.18),
-    ped = "g_m_m_mexboss_01"
-}
-
--- Copper Config
 Config.CutCopper = {
     [1] = {
         coords = vector3(673.51, -927.61, 22.08),
