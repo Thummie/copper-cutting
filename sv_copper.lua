@@ -1,4 +1,4 @@
-local QBCore = exports['moon-core']:GetCoreObject()
+local QBCore = exports['qb-core']:GetCoreObject()
 
 CreateThread(function()
     while true do
@@ -17,14 +17,8 @@ end)
 
 -- Events
 RegisterNetEvent('copper:giveCopper', function(location)
-    -- Going to build in automatic ban if distance above 120
-    --[[if k ~= nil and Config.CutCopper[k].coords ~= nil then
-        local playerPos = GetEntityCoords(GetPlayerPed(source), false)
-        local dist = GetDistanceBetweenCoords(playerPos, Config.CutCopper[k].coords, true)
-    end--]]
-
     local Player = QBCore.Functions.GetPlayer(source)
-    if Player.Functions.AddItem('copper', math.random(3, 8)) then
+    if Player.Functions.AddItem('copper', math.random(Config.MinAmount, Config.MaxAmount)) then
         TriggerClientEvent('inventory:client:ItemBox', source, QBCore.Shared.Items['copper'], "add")
     else
         TriggerClientEvent('QBCore:Notify', source, 'Je hebt teveel spullen op zak..', 'error')
