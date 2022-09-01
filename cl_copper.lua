@@ -1,4 +1,4 @@
-local QBCore = exports['moon-core']:GetCoreObject()
+local QBCore = exports['qb-core']:GetCoreObject()
 
 local isLoggedIn = false
 local copperZones = {}
@@ -10,7 +10,7 @@ Citizen.CreateThread(function()
     for k, v in pairs(Config.CutCopper) do
         if not Config.CutCopper[k].cut then
             copperZones[k] = "cutcopper"..tostring(k)
-            exports['moon-target']:AddBoxZone("cutcopper"..tostring(k), Config.CutCopper[k].coords, 1.0, 1.0, {
+            exports['qb-target']:AddBoxZone("cutcopper"..tostring(k), Config.CutCopper[k].coords, 1.0, 1.0, {
                 name = "cutcopper"..tostring(k),
                 heading = 0.0,
                 debugPoly = false,
@@ -39,7 +39,7 @@ Citizen.CreateThread(function()
                                         --if math.random(1, 12) <= 4 then
                                         --    exports['ps-dispatch']:copperCut
                                         --end
-                                        exports['moon-target']:RemoveZone("cutcopper"..tostring(k))
+                                        exports['qb-target']:RemoveZone("cutcopper"..tostring(k))
                                     end)
                                 else
                                     QBCore.Functions.Notify('Je hebt geen betonschaar..', 'error')
@@ -54,7 +54,7 @@ Citizen.CreateThread(function()
                 distance = 1.5
             })
         else
-            exports['moon-target']:RemoveZone("cutcopper"..tostring(k))
+            exports['qb-target']:RemoveZone("cutcopper"..tostring(k))
         end
     end
 end)
@@ -76,7 +76,7 @@ end)
 RegisterNetEvent('copper:cutState', function(k)
     for k, v in pairs(Config.CutCopper) do
         if not Config.CutCopper[k].cut then
-            exports['moon-target']:AddBoxZone("cutcopper"..tostring(k), Config.CutCopper[k].coords, 1.0, 1.0, {
+            exports['qb-target']:AddBoxZone("cutcopper"..tostring(k), Config.CutCopper[k].coords, 1.0, 1.0, {
                 name = "cutcopper"..tostring(k),
                 heading = 0.0,
                 debugPoly = false,
@@ -102,10 +102,11 @@ RegisterNetEvent('copper:cutState', function(k)
                                     }, {}, {}, function() -- Done
                                         ClearPedTasks(PlayerPedId())
                                         TriggerServerEvent('copper:giveCopper', k)
+                                        -- Implement here your own police notify script, in my case it is a custom added coppe notify for ps-dispatch.
                                         --if math.random(1, 12) <= 4 then
                                         --    exports['ps-dispatch']:copperCut
                                         --end
-                                        exports['moon-target']:RemoveZone("cutcopper"..tostring(k))
+                                        exports['qb-target']:RemoveZone("cutcopper"..tostring(k))
                                     end)
                                 else
                                     QBCore.Functions.Notify('Je hebt geen betonschaar..', 'error')
@@ -120,7 +121,7 @@ RegisterNetEvent('copper:cutState', function(k)
                 distance = 1.5
             })
         else
-            exports['moon-target']:RemoveZone("cutcopper"..tostring(k))
+            exports['qb-target']:RemoveZone("cutcopper"..tostring(k))
         end
     end
 end)
