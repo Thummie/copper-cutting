@@ -1,5 +1,10 @@
 Config = Config or {}
 
+-- Minimum and maximum amount of copper you will get when cutting.
+Config.MinAmount = 3
+Config.MaxAmount = 8
+
+-- Copper cutting locations
 Config.CutCopper = {
     [1] = {
         coords = vector3(673.51, -927.61, 22.08),
