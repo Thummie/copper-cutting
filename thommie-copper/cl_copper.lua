@@ -24,7 +24,7 @@ Citizen.CreateThread(function()
                                 if hasItem then
                                     TriggerServerEvent('copper:setState', k)
                                     Config.CutCopper[k].cut = true
-                                    QBCore.Functions.Progressbar('cut_copper', 'Koper knippen..', 5000, false, false, { -- Name | Label | Time | useWhileDead | canCancel
+                                    QBCore.Functions.Progressbar('cut_copper', 'Cutting copper..', 5000, false, false, { -- Name | Label | Time | useWhileDead | canCancel
                                         disableMovement = true,
                                         disableCarMovement = true,
                                         disableMouse = false,
@@ -42,12 +42,12 @@ Citizen.CreateThread(function()
                                         exports['qb-target']:RemoveZone("cutcopper"..tostring(k))
                                     end)
                                 else
-                                    QBCore.Functions.Notify('Je hebt geen betonschaar..', 'error')
+                                    QBCore.Functions.Notify('You do not have heavy cutters on you..', 'error')
                                 end
                             end, 'cutter')
                         end,
                         icon = "fas fa-scissors",
-                        label = "Koper knippen",
+                        label = "Cut copper",
                         data = k,
                     },
                 },
@@ -90,7 +90,7 @@ RegisterNetEvent('copper:cutState', function(k)
                                 if hasItem then
                                     TriggerServerEvent('copper:setState', k)
                                     Config.CutCopper[k].cut = true
-                                    QBCore.Functions.Progressbar('cut_copper', 'Koper knippen..', 5000, false, false, { -- Name | Label | Time | useWhileDead | canCancel
+                                    QBCore.Functions.Progressbar('cut_copper', 'Cutting copper..', 5000, false, false, { -- Name | Label | Time | useWhileDead | canCancel
                                         disableMovement = true,
                                         disableCarMovement = true,
                                         disableMouse = false,
@@ -109,12 +109,12 @@ RegisterNetEvent('copper:cutState', function(k)
                                         exports['qb-target']:RemoveZone("cutcopper"..tostring(k))
                                     end)
                                 else
-                                    QBCore.Functions.Notify('Je hebt geen betonschaar..', 'error')
+                                    QBCore.Functions.Notify('You do not have heavy cutters on you..', 'error')
                                 end
                             end, 'cutter')
                         end,
                         icon = "fas fa-scissors",
-                        label = "Koper knippen",
+                        label = "Cut copper",
                         data = k,
                     },
                 },
