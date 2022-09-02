@@ -21,7 +21,7 @@ RegisterNetEvent('copper:giveCopper', function(location)
     if Player.Functions.AddItem('copper', math.random(Config.MinAmount, Config.MaxAmount)) then
         TriggerClientEvent('inventory:client:ItemBox', source, QBCore.Shared.Items['copper'], "add")
     else
-        TriggerClientEvent('QBCore:Notify', source, 'Je hebt teveel spullen op zak..', 'error')
+        TriggerClientEvent('QBCore:Notify', source, 'You have to much items on you..', 'error')
     end
 end)
 
