@@ -16,15 +16,6 @@ CreateThread(function()
 end)
 
 -- Events
-RegisterNetEvent('copper:giveCopper', function(location)
-    local Player = QBCore.Functions.GetPlayer(source)
-    if Player.Functions.AddItem('copper', math.random(Config.MinAmount, Config.MaxAmount)) then
-        TriggerClientEvent('inventory:client:ItemBox', source, QBCore.Shared.Items['copper'], "add")
-    else
-        TriggerClientEvent('QBCore:Notify', source, 'You have to much items on you..', 'error')
-    end
-end)
-
 RegisterNetEvent('copper:setState', function(location)
     Config.CutCopper[location].cut = true
     Config.CutCopper[location].timeout = (os.time() + 1200)
