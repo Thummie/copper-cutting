@@ -1,15 +1,9 @@
 local QBCore = exports['qb-core']:GetCoreObject()
 
-local isLoggedIn = false
-local copperZones = {}
-local insideZone = false
-
 -- Loops
-Citizen.CreateThread(function()
-    Wait(4)
+CreateThread(function()
     for k, v in pairs(Config.CutCopper) do
         if not Config.CutCopper[k].cut then
-            copperZones[k] = "cutcopper"..tostring(k)
             exports['qb-target']:AddBoxZone("cutcopper"..tostring(k), Config.CutCopper[k].coords, 1.0, 1.0, {
                 name = "cutcopper"..tostring(k),
                 heading = 0.0,
@@ -20,34 +14,43 @@ Citizen.CreateThread(function()
                 options = {
                     {
                         action = function()
-                            QBCore.Functions.TriggerCallback('QBCore:HasItem', function(hasItem)
-                                if hasItem then
-                                    TriggerServerEvent('copper:setState', k)
-                                    Config.CutCopper[k].cut = true
-                                    QBCore.Functions.Progressbar('cut_copper', 'Cutting copper..', 5000, false, false, { -- Name | Label | Time | useWhileDead | canCancel
-                                        disableMovement = true,
-                                        disableCarMovement = true,
-                                        disableMouse = false,
-                                        disableCombat = true,
-                                    }, {
-                                        animDict = 'anim@amb@clubhouse@tutorial@bkr_tut_ig3@',
-                                        anim = 'machinic_loop_mechandplayer',
-                                        flags = 16,
-                                    }, {}, {}, function() -- Done
-                                        ClearPedTasks(PlayerPedId())
-                                        TriggerServerEvent('copper:giveCopper', k)
-                                        --if math.random(1, 12) <= 4 then
-                                        --    exports['ps-dispatch']:copperCut
-                                        --end
-                                        exports['qb-target']:RemoveZone("cutcopper"..tostring(k))
-                                    end)
-                                else
-                                    QBCore.Functions.Notify('You do not have heavy cutters on you..', 'error')
-                                end
-                            end, 'cutter')
+                            if QBCore.Functions.HasItem("cutter") then
+                                TriggerServerEvent('copper:setState', k)
+                                Config.CutCopper[k].cut = true
+                                QBCore.Functions.Progressbar('cut_copper', 'Cutting Copper..', 5000, false, false, { -- Name | Label | Time | useWhileDead | canCancel
+                                    disableMovement = true,
+                                    disableCarMovement = true,
+                                    disableMouse = false,
+                                    disableCombat = true,
+                                }, {
+                                    animDict = 'anim@amb@clubhouse@tutorial@bkr_tut_ig3@',
+                                    anim = 'machinic_loop_mechandplayer',
+                                    flags = 16,
+                                }, {}, {}, function() -- Done
+                                    ClearPedTasks(PlayerPedId())
+                                    exports['qb-inventory']:toggleItem(1, 'copper', math.random(2, 8))
+                                    if math.random(1, 12) <= 4 then
+                                        exports["ps-dispatch"]:CustomAlert({
+                                            coords = GetEntityCoords(PlayerPedId()),
+                                            message = "Koper Diefstal",
+                                            dispatchCode = "211",
+                                            description = "Koper diefstal",
+                                            gender = true,
+                                            radius = 0,
+                                            sprite = 761,
+                                            color = 1,
+                                            scale = 0.5,
+                                            length = 2,
+                                        })
+                                    end
+                                    exports['qb-target']:RemoveZone("cutcopper"..tostring(k))
+                                end)
+                            else
+                                QBCore.Functions.Notify('You do not have heavy cutters on you..', 'error')
+                            end
                         end,
                         icon = "fas fa-scissors",
-                        label = "Cut copper",
+                        label = "Cut Copper",
                         data = k,
                     },
                 },
@@ -86,35 +89,43 @@ RegisterNetEvent('copper:cutState', function(k)
                 options = {
                     {
                         action = function()
-                            QBCore.Functions.TriggerCallback('QBCore:HasItem', function(hasItem)
-                                if hasItem then
-                                    TriggerServerEvent('copper:setState', k)
-                                    Config.CutCopper[k].cut = true
-                                    QBCore.Functions.Progressbar('cut_copper', 'Cutting copper..', 5000, false, false, { -- Name | Label | Time | useWhileDead | canCancel
-                                        disableMovement = true,
-                                        disableCarMovement = true,
-                                        disableMouse = false,
-                                        disableCombat = true,
-                                    }, {
-                                        animDict = 'anim@amb@clubhouse@tutorial@bkr_tut_ig3@',
-                                        anim = 'machinic_loop_mechandplayer',
-                                        flags = 16,
-                                    }, {}, {}, function() -- Done
-                                        ClearPedTasks(PlayerPedId())
-                                        TriggerServerEvent('copper:giveCopper', k)
-                                        -- Implement here your own police notify script, in my case it is a custom added coppe notify for ps-dispatch.
-                                        --if math.random(1, 12) <= 4 then
-                                        --    exports['ps-dispatch']:copperCut
-                                        --end
-                                        exports['qb-target']:RemoveZone("cutcopper"..tostring(k))
-                                    end)
-                                else
-                                    QBCore.Functions.Notify('You do not have heavy cutters on you..', 'error')
-                                end
-                            end, 'cutter')
+                            if QBCore.Functions.HasItem("cutter") then
+                                TriggerServerEvent('copper:setState', k)
+                                Config.CutCopper[k].cut = true
+                                QBCore.Functions.Progressbar('cut_copper', 'Cutting Copper..', 5000, false, false, { -- Name | Label | Time | useWhileDead | canCancel
+                                    disableMovement = true,
+                                    disableCarMovement = true,
+                                    disableMouse = false,
+                                    disableCombat = true,
+                                }, {
+                                    animDict = 'anim@amb@clubhouse@tutorial@bkr_tut_ig3@',
+                                    anim = 'machinic_loop_mechandplayer',
+                                    flags = 16,
+                                }, {}, {}, function() -- Done
+                                    ClearPedTasks(PlayerPedId())
+                                    exports['qb-inventory']:toggleItem(1, 'copper', math.random(2, 8))
+                                    if math.random(1, 12) <= 4 then
+                                        exports["ps-dispatch"]:CustomAlert({
+                                            coords = GetEntityCoords(PlayerPedId()),
+                                            message = "Koper Diefstal",
+                                            dispatchCode = "211",
+                                            description = "Koper diefstal",
+                                            gender = true,
+                                            radius = 0,
+                                            sprite = 761,
+                                            color = 1,
+                                            scale = 0.5,
+                                            length = 2,
+                                        })
+                                    end
+                                    exports['qb-target']:RemoveZone("cutcopper"..tostring(k))
+                                end)
+                            else
+                                QBCore.Functions.Notify('You do not have heavy cutters on you..', 'error')
+                            end
                         end,
                         icon = "fas fa-scissors",
-                        label = "Cut copper",
+                        label = "Cut Copper",
                         data = k,
                     },
                 },
