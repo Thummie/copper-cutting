@@ -5,11 +5,6 @@ author 'Thommie'
 description 'Copper Cutting Script'
 
 lua54 'yes'
-escrow_ignore {
-    'config.lua',
-    'cl_copper.lua',
-    'sv_copper.lua'
-}
 
 shared_script 'config.lua'
 client_script 'cl_copper.lua'
