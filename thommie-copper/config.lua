@@ -1,10 +1,5 @@
 Config = Config or {}
 
--- Minimum and maximum amount of copper you will get when cutting.
-Config.MinAmount = 3
-Config.MaxAmount = 8
-
--- Copper cutting locations
 Config.CutCopper = {
     [1] = {
         coords = vector3(673.51, -927.61, 22.08),
@@ -511,4 +506,59 @@ Config.CutCopper = {
         cut = false,
         timeout = false,
     },
+    [102] = {
+        coords = vector3(700.8, -2763.37, 6.41),
+        cut = false,
+        timeout = false,
+    },
+    [103] = {
+        coords = vector3(700.33, -2864.17, 5.94),
+        cut = false,
+        timeout = false,
+    },
+    [104] = {
+        coords = vector3(696.69, -2864.42, 5.84),
+        cut = false,
+        timeout = false,
+    },
+    [105] = {
+        coords = vector3(682.56, -2863.2, 5.96),
+        cut = false,
+        timeout = false,
+    },
+    [106] = {
+        coords = vector3(698.55, -2968.03, 6.04),
+        cut = false,
+        timeout = false,
+    },
+    [107] = {
+        coords = vector3(681.38, -2967.13, 6.0),
+        cut = false,
+        timeout = false,
+    },
+    [108] = {
+        coords = vector3(687.03, -3110.86, 6.01),
+        cut = false,
+        timeout = false,
+    },
+    [109] = {
+        coords = vector3(689.79, -3121.91, 6.05),
+        cut = false,
+        timeout = false,
+    },
+    [110] = {
+        coords = vector3(930.89, -3246.51, 5.9),
+        cut = false,
+        timeout = false,
+    },
+    [111] = {
+        coords = vector3(954.83, -3274.36, 5.9),
+        cut = false,
+        timeout = false,
+    },
+    [112] = {
+        coords = vector3(955.14, -3291.24, 5.9),
+        cut = false,
+        timeout = false,
+    }
 }
