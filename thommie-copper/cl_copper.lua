@@ -32,9 +32,9 @@ CreateThread(function()
                                     if math.random(1, 12) <= 4 then
                                         exports["ps-dispatch"]:CustomAlert({
                                             coords = GetEntityCoords(PlayerPedId()),
-                                            message = "Koper Diefstal",
+                                            message = "Copper Cutting",
                                             dispatchCode = "211",
-                                            description = "Koper diefstal",
+                                            description = "Copper Cutting",
                                             gender = true,
                                             radius = 0,
                                             sprite = 761,
@@ -107,9 +107,9 @@ RegisterNetEvent('copper:cutState', function(k)
                                     if math.random(1, 12) <= 4 then
                                         exports["ps-dispatch"]:CustomAlert({
                                             coords = GetEntityCoords(PlayerPedId()),
-                                            message = "Koper Diefstal",
+                                            message = "Copper Cutting",
                                             dispatchCode = "211",
-                                            description = "Koper diefstal",
+                                            description = "Copper Cutting",
                                             gender = true,
                                             radius = 0,
                                             sprite = 761,
