@@ -28,7 +28,7 @@ CreateThread(function()
                                     flags = 16,
                                 }, {}, {}, function() -- Done
                                     ClearPedTasks(PlayerPedId())
-                                    exports['qb-inventory']:toggleItem(1, 'copper', math.random(2, 8))
+                                    TriggerServerEvent('copper:giveItem', 'copper', math.random(2, 8))
                                     if math.random(1, 12) <= 4 then
                                         exports["ps-dispatch"]:CustomAlert({
                                             coords = GetEntityCoords(PlayerPedId()),
@@ -103,7 +103,7 @@ RegisterNetEvent('copper:cutState', function(k)
                                     flags = 16,
                                 }, {}, {}, function() -- Done
                                     ClearPedTasks(PlayerPedId())
-                                    exports['qb-inventory']:toggleItem(1, 'copper', math.random(2, 8))
+                                    TriggerServerEvent('copper:giveItem', 'copper', math.random(2, 8))
                                     if math.random(1, 12) <= 4 then
                                         exports["ps-dispatch"]:CustomAlert({
                                             coords = GetEntityCoords(PlayerPedId()),
