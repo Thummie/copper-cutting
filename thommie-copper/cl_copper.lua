@@ -1,138 +1,83 @@
 local QBCore = exports['qb-core']:GetCoreObject()
+local CurrentCops = 0
 
--- Loops
-CreateThread(function()
-    for k, v in pairs(Config.CutCopper) do
-        if not Config.CutCopper[k].cut then
-            exports['qb-target']:AddBoxZone("cutcopper"..tostring(k), Config.CutCopper[k].coords, 1.0, 1.0, {
-                name = "cutcopper"..tostring(k),
-                heading = 0.0,
-                debugPoly = false,
-                minZ = Config.CutCopper[k].coords.z - 1.0,
-                maxZ = Config.CutCopper[k].coords.z + 1.0,
-            }, {
-                options = {
-                    {
-                        action = function()
-                            if QBCore.Functions.HasItem("cutter") then
-                                TriggerServerEvent('copper:setState', k)
-                                Config.CutCopper[k].cut = true
-                                QBCore.Functions.Progressbar('cut_copper', 'Cutting Copper..', 5000, false, false, { -- Name | Label | Time | useWhileDead | canCancel
-                                    disableMovement = true,
-                                    disableCarMovement = true,
-                                    disableMouse = false,
-                                    disableCombat = true,
-                                }, {
-                                    animDict = 'anim@amb@clubhouse@tutorial@bkr_tut_ig3@',
-                                    anim = 'machinic_loop_mechandplayer',
-                                    flags = 16,
-                                }, {}, {}, function() -- Done
-                                    ClearPedTasks(PlayerPedId())
-                                    TriggerServerEvent('copper:giveItem', 'copper', math.random(2, 8))
-                                    if math.random(1, 12) <= 4 then
-                                        exports["ps-dispatch"]:CustomAlert({
-                                            coords = GetEntityCoords(PlayerPedId()),
-                                            message = "Theft op public property",
-                                            dispatchCode = "211",
-                                            description = "Theft op public property",
-                                            gender = true,
-                                            radius = 0,
-                                            sprite = 761,
-                                            color = 1,
-                                            scale = 0.5,
-                                            length = 2,
-                                        })
-                                    end
-                                    exports['qb-target']:RemoveZone("cutcopper"..tostring(k))
-                                end)
-                            else
-                                QBCore.Functions.Notify('You do not have heavy cutters on you..', 'error')
-                            end
-                        end,
-                        icon = "fas fa-scissors",
-                        label = "Cut Copper",
-                        data = k,
-                    },
-                },
-                distance = 1.5
-            })
-        else
-            exports['qb-target']:RemoveZone("cutcopper"..tostring(k))
-        end
+local function setupCopperTargets()
+    exports['qb-target']:AddTargetModel(Config.Copper.props, {
+        options = {
+            {
+                icon = 'fas fa-cut',
+                label = 'Cut copper',
+                action = function(entity)
+                    if QBCore.Functions.HasItem('cutter') then
+                        if CurrentCops >= Config.Copper.police then
+                            TriggerEvent('copper:cutCopper', entity)
+                        else
+                            QBCore.Functions.Notify('There are not enough officers on duty..', 'error')
+                        end
+                    else
+                        QBCore.Functions.Notify('You are missing something..', 'error')
+                        if Config.Debug then
+                            print('no cutter')
+                        end
+                    end
+                end,
+            },
+        },
+        distance = 1.5
+    })
+end
+setupCopperTargets()
+
+RegisterNetEvent('copper:cutCopper', function(entity)
+    if Config.Debug then
+        print('Current entity '..entity)
     end
-end)
 
-CreateThread(function()
-    while true do
-        Wait(4)
-        for k, v in pairs(Config.CutCopper) do
-            if #(GetEntityCoords(PlayerPedId()) - Config.CutCopper[k].coords) < 8.0 then
-                if not Config.CutCopper[k].cut then
-                    DrawMarker(2, Config.CutCopper[k].coords, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.4, 0.4, 0.2, 255, 255, 255, 255, 0, 1, 0, 0, 0, 0, 0)
-                end
+    if not Config.CutProps[entity] then
+        TriggerServerEvent('copper:sync', entity, true)
+        TaskTurnPedToFaceEntity(PlayerPedId(), entity, 1.0)
+        Wait(1000)
+        if Config.Debug then
+            print('started cutting')
+        end
+        ClearPedTasks(PlayerPedId())
+
+        QBCore.Functions.Progressbar('cut_copper', 'Cutting Copper..', 5000, false, false, { -- Name | Label | Time | useWhileDead | canCancel
+            disableMovement = true,
+            disableCarMovement = true,
+            disableMouse = false,
+            disableCombat = true,
+        }, {
+            animDict = 'anim@amb@clubhouse@tutorial@bkr_tut_ig3@',
+            anim = 'machinic_loop_mechandplayer',
+            flags = 16,
+        }, {}, {}, function() -- Done
+            ClearPedTasks(PlayerPedId())
+            TriggerServerEvent('copper:giveItem', 'copper', math.random(2, 8))
+            if math.random(1, 12) <= 4 then
+                exports["ps-dispatch"]:CustomAlert({
+                    coords = GetEntityCoords(PlayerPedId()),
+                    message = "Theft of public property",
+                    dispatchCode = "211",
+                    description = "Theft of public property",
+                    gender = true,
+                    radius = 0,
+                    sprite = 761,
+                    color = 1,
+                    scale = 0.5,
+                    length = 2,
+                })
             end
-        end
+        end)
+    else
+        QBCore.Functions.Notify('The copper has already been cut..', 'error')
     end
 end)
 
--- Events
-RegisterNetEvent('copper:cutState', function(k)
-    for k, v in pairs(Config.CutCopper) do
-        if not Config.CutCopper[k].cut then
-            exports['qb-target']:AddBoxZone("cutcopper"..tostring(k), Config.CutCopper[k].coords, 1.0, 1.0, {
-                name = "cutcopper"..tostring(k),
-                heading = 0.0,
-                debugPoly = false,
-                minZ = Config.CutCopper[k].coords.z - 1.0,
-                maxZ = Config.CutCopper[k].coords.z + 1.0,
-            }, {
-                options = {
-                    {
-                        action = function()
-                            if QBCore.Functions.HasItem("cutter") then
-                                TriggerServerEvent('copper:setState', k)
-                                Config.CutCopper[k].cut = true
-                                QBCore.Functions.Progressbar('cut_copper', 'Cutting Copper..', 5000, false, false, { -- Name | Label | Time | useWhileDead | canCancel
-                                    disableMovement = true,
-                                    disableCarMovement = true,
-                                    disableMouse = false,
-                                    disableCombat = true,
-                                }, {
-                                    animDict = 'anim@amb@clubhouse@tutorial@bkr_tut_ig3@',
-                                    anim = 'machinic_loop_mechandplayer',
-                                    flags = 16,
-                                }, {}, {}, function() -- Done
-                                    ClearPedTasks(PlayerPedId())
-                                    TriggerServerEvent('copper:giveItem', 'copper', math.random(2, 8))
-                                    if math.random(1, 12) <= 4 then
-                                        exports["ps-dispatch"]:CustomAlert({
-                                            coords = GetEntityCoords(PlayerPedId()),
-                                            message = "Theft op public property",
-                                            dispatchCode = "211",
-                                            description = "Theft op public property",
-                                            gender = true,
-                                            radius = 0,
-                                            sprite = 761,
-                                            color = 1,
-                                            scale = 0.5,
-                                            length = 2,
-                                        })
-                                    end
-                                    exports['qb-target']:RemoveZone("cutcopper"..tostring(k))
-                                end)
-                            else
-                                QBCore.Functions.Notify('You do not have heavy cutters on you..', 'error')
-                            end
-                        end,
-                        icon = "fas fa-scissors",
-                        label = "Cut Copper",
-                        data = k,
-                    },
-                },
-                distance = 1.5
-            })
-        else
-            exports['qb-target']:RemoveZone("cutcopper"..tostring(k))
-        end
-    end
+RegisterNetEvent('copper:sync', function(cutProp)
+    Config.CutProps = cutProp
+end)
+
+RegisterNetEvent('police:SetCopCount', function(amount)
+    CurrentCops = amount
 end)
