@@ -3,6 +3,7 @@ game 'gta5'
 
 author 'Thommie'
 description 'Copper Cutting Script'
+version 'V2.0'
 
 lua54 'yes'
 
